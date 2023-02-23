@@ -1,4 +1,4 @@
-export default class LocalStorageAPI {
+export class LocalStorageAPI {
     constructor(basePath) {
         this.basePath = basePath;
         this.parsed = JSON.parse(localStorage.getItem(this.basePath));

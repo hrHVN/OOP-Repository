@@ -1,4 +1,4 @@
-export default class APIClient {
+export class APIClient {
     constructor(baseUrl) {
       this.baseUrl = baseUrl;
     }

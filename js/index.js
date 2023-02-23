@@ -1,11 +1,11 @@
 import RepositoryFactory from './factory_repositories.js';
-import './employee.js';
+import { StaffMember, DeliveryDriver } from './employee.js';
 
 const apiFactory = new RepositoryFactory();
 const staffRepository = apiFactory.createStaffRepository(true);
 const apiRepository = apiFactory.createStaffRepository();
 const driverRepository = apiFactory.createDriverRepository(true);
-
+const localStorage = apiFactory.createLocalStorageRepository();
 
 
 staffRepository.create(new StaffMember('Andreas', 'Nesheim', null, 'a_n@gmail.com', '14:40', 25, '15:05'), (e) => { populateDom(e) })
