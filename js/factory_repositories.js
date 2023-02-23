@@ -40,7 +40,7 @@ export default class RepositoryFactory {
   }
 
   createLocalStorageRepository() {
-    return new LocalStorageAPI(this._getOrCreateLocalStorageAPI('wdt-app-storage'))
+    return new StaffRepository(this._getOrCreateLocalStorageAPI('wdt-app-storage'))
   }
 }
 

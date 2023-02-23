@@ -39,7 +39,7 @@ class StaffRepository extends EntityRepository {
 
 class LocalStorageRepository extends EntityRepository {
     constructor (apiClient) {
-        super(apiClient, '');
+        super(apiClient, '/local');
     }
 }
 

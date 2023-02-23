@@ -7,17 +7,35 @@ const apiRepository = apiFactory.createStaffRepository();
 const driverRepository = apiFactory.createDriverRepository(true);
 const localStorage = apiFactory.createLocalStorageRepository();
 
+// staffRepository.create(new StaffMember('Andreas', 'Nesheim', null, 'a_n@gmail.com', '14:40', 25, '15:05'), (e) => { populateDom(e) })
+// staffRepository.create(new StaffMember('Emilie', 'Nesheim', null, 'e_n@gmail.com', null, null, null), (e) => { populateDom(e) })
 
-staffRepository.create(new StaffMember('Andreas', 'Nesheim', null, 'a_n@gmail.com', '14:40', 25, '15:05'), (e) => { populateDom(e) })
-staffRepository.create(new StaffMember('Emilie', 'Nesheim', null, 'e_n@gmail.com', null, null, null), (e) => { populateDom(e) })
-
-apiRepository.getAll((e) => {
-    e = e.results;
-
-    for (const key in e) {
-        staffRepository.create(new StaffMember(e[key].name.first, e[key].name.last, e[key].picture.thumbnail, e[key].email, null, null, null), (e) => { populateDom(e) })
+localStorage.getAll((e) => {
+    if (e.length <= 0) {
+        apiRepository.getAll((e) => {
+            e.results.forEach(element => {
+                staffRepository.create(new StaffMember(
+                    element.name.first,
+                    element.name.last,
+                    element.picture.thumbnail,
+                    element.email,
+                    null,
+                    null,
+                    null),
+                    (staff) => {
+                        localStorage.create(staff, (e) => { populateDom(e) })
+                    })
+            });
+        })
+    } else {
+        e.forEach(obj => {
+            populateDom(obj);
+        });
     }
 })
+
+let temp = null;
+localStorage.getById('7282b07e-f76a-4921-9feb-c1da6e2ea243', (e) => {console.log(e)});
 
 
 function updateStaff() {

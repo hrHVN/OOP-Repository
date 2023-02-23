@@ -1,7 +1,7 @@
 export class LocalStorageAPI {
     constructor(basePath) {
         this.basePath = basePath;
-        this.parsed = JSON.parse(localStorage.getItem(this.basePath));
+        this.parsed = JSON.parse(localStorage.getItem(this.basePath) || "{}");
     }
 
     _create_UUID() {
@@ -14,26 +14,29 @@ export class LocalStorageAPI {
         return uuid;
     }
 
-    static create(path, object, callback) {
+    create(path, object, callback) {
         let components = path.split('/').filter((e) => e != '');
+
         // Catch lack of ID
         if (object.id === null) object.id = this._create_UUID()
+
         // Crate storage if non exists
-        if (this.parsed[components[0]] === null) this.parsed[components[0]] = [];
+        if (this.parsed[components[0]] == undefined) this.parsed[components[0]] = [];
+
         // Update Local storage JSON
         this.parsed[components[0]].push(object);
+        
         localStorage.setItem(this.basePath, JSON.stringify(this.parsed));
+        this.parsed = JSON.parse(localStorage.getItem(this.basePath));
         callback(object);
     }
 
-    static read(path, callback) {
+    read(path, callback) {
         // Update table
-        this.parsed = JSON.parse(localStorage.getItem(this.basePath));
-        let components = path.split('/').filter((e) => e != '')[0];
-
+        let components = path.split('/').filter((e) => e != '');
         // Get All, or return empty
         if (components.length == 1) {
-            let stored = this.parsed[components[0]];
+            let stored = this.parsed == null ? null : this.parsed[components[0]];
             if (stored == null) {
                 return callback([]);
             }
@@ -47,7 +50,7 @@ export class LocalStorageAPI {
         return callback(stored);
     }
 
-    static update(path, object, callback) {
+    update(path, object, callback) {
         // IF no ID
         let components = path.split("/").filter((e) => e !== "");
         if (components.length == 1) return callback(`Invalid path ${path}`);
@@ -62,7 +65,7 @@ export class LocalStorageAPI {
         return callback(object);
     }
 
-    static delete(path, callback) {
+    delete(path, callback) {
         // If no ID, then delete storage
         let components = path.split("/").filter((e) => e !== "");
         if (components.length == 1) {
@@ -76,7 +79,7 @@ export class LocalStorageAPI {
         if (index == null) return callback(`Object with id ${components[1]} not found.`);
 
         let stored = this.parsed[components[0]][index];
-        this.parsed.splice(index, 1);
+        this.parsed[components[0]].splice(index, 1);
 
         // Update Local storage JSON
         localStorage.setItem(this.basePath, JSON.stringify(this.parsed))
