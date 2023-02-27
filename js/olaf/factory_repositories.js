@@ -1,7 +1,7 @@
-import { DriverRepository, StaffRepository } from "./entity_repository.js";
+import { DriverRepository, LocalStorageRepository, StaffRepository } from "./entity_repository.js";
 import { APIClient } from './api_client.js';
 import { MemoryCache } from "./memorycahe.js";
-import { LocalStorageAPI } from './localStorage.js';
+import { LocalStorageAPI } from '../andreas/localStorage.js';
 
 export default class RepositoryFactory {
 
@@ -23,6 +23,7 @@ export default class RepositoryFactory {
     return this.memoryCache;
   }
 
+  // Edit by student
   _getOrCreateLocalStorageAPI(api) {
     if (this.localStorageAPI) return this.localStorageAPI;
     this.localStorageAPI = new LocalStorageAPI(api);
@@ -39,8 +40,9 @@ export default class RepositoryFactory {
     return new StaffRepository(storage);
   }
 
+  // Edit by Student
   createLocalStorageRepository() {
-    return new StaffRepository(this._getOrCreateLocalStorageAPI('wdt-app-storage'))
+    return new LocalStorageRepository(this._getOrCreateLocalStorageAPI('wdt-app-storage'))
   }
 }
 

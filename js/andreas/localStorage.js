@@ -18,8 +18,7 @@ export class LocalStorageAPI {
         let components = path.split('/').filter((e) => e != '');
 
         // Catch lack of ID
-        if (object.id === null) object.id = this._create_UUID()
-
+        if (object.id == null) object.id = this._create_UUID()
         // Crate storage if non exists
         if (this.parsed[components[0]] == undefined) this.parsed[components[0]] = [];
 
@@ -60,6 +59,13 @@ export class LocalStorageAPI {
         if (index == null) return callback(`Object with id ${components[1]} not found.`);
         this.parsed[components[0]][index] = object;
 
+        //Sorting the table
+        this.parsed[components[0]].sort((a, b) => {
+            if (b.duration == null) return -1;
+            if (a.duration == null) return 1;
+            return a.duration - b.duration;
+        });
+       
         // Update Local storage JSON
         localStorage.setItem(this.basePath, JSON.stringify(this.parsed))
         return callback(object);

@@ -37,6 +37,7 @@ class StaffRepository extends EntityRepository {
     }
 }
 
+// Edit by Student
 class LocalStorageRepository extends EntityRepository {
     constructor (apiClient) {
         super(apiClient, '/local');
