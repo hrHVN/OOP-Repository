@@ -33,3 +33,7 @@ tbody tr img {
 .hidden {
     display: none;
 }
+
+.active {
+    background-color: red;
+}

@@ -1,4 +1,4 @@
-export class LocalStorageAPI {
+class LocalStorageAPI {
     constructor(basePath) {
         this.basePath = basePath;
         this.parsed = JSON.parse(localStorage.getItem(this.basePath) || "{}");
@@ -73,22 +73,24 @@ export class LocalStorageAPI {
 
     delete(path, callback) {
         // If no ID, then delete storage
-        let components = path.split("/").filter((e) => e !== "");
-        if (components.length == 1) {
-            let stored = this.parsed[components[0]];
-            delete this.parsed[components[0]];
+        let locationPath = path.split("/").filter((e) => e !== "");
+        if (locationPath.length == 1) {
+            let stored = this.parsed[locationPath[0]];
+            delete this.parsed[locationPath[0]];
             return callback(stored);
         }
 
         // IF ID delete ID, and catch error
-        let index = this.parsed[components[0]].findIndex((e) => e.id === components[1]);
-        if (index == null) return callback(`Object with id ${components[1]} not found.`);
+        let index = this.parsed[locationPath[0]].findIndex((e) => e.id === locationPath[1]);
+        if (index == null) return callback(`not found`);
 
-        let stored = this.parsed[components[0]][index];
-        this.parsed[components[0]].splice(index, 1);
+        let stored = this.parsed[locationPath[0]][index];
+        this.parsed[locationPath[0]].splice(index, 1);
 
         // Update Local storage JSON
         localStorage.setItem(this.basePath, JSON.stringify(this.parsed))
         return callback(stored);
     }
 }
+
+export {LocalStorageAPI}

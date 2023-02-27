@@ -31,12 +31,16 @@ export default class RepositoryFactory {
   }
 
   createDriverRepository(useMemoryCache) {
-    let storage = useMemoryCache ? this._getOrCreateMemoryCache() : this._getOrCreateApiClient();
+    let storage = useMemoryCache ?
+      this._getOrCreateMemoryCache() :
+      this._getOrCreateApiClient();
     return new DriverRepository(storage);
   }
 
   createStaffRepository(useMemoryCache) {
-    let storage = useMemoryCache ? this._getOrCreateMemoryCache() : this._getOrCreateApiClient('https://randomuser.me/api/?results=5&noinfo');
+    let storage = useMemoryCache ?
+      this._getOrCreateMemoryCache() :
+      this._getOrCreateApiClient('https://randomuser.me/api/?results=5&noinfo');
     return new StaffRepository(storage);
   }
 
